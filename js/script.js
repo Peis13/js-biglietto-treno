@@ -1,65 +1,62 @@
 // DATI
 var euroKm = 0.21;
 
-var twentyPerCent = ( 20 / 100 );
-
-var fortyPerCent = ( 40 / 100 );
-
 var km = parseInt( prompt( "quanti km vuoi fare?" ));
 
 var anni = prompt( "quanti anni hai?" );
 
 var lunghezzaAnni = anni.length;
+
+var ticketShown = document.getElementById("ticket");
 // FINE DATI
 
-// TESI
-var ticket
-
-// CONDIZIONI
+// LOGICA
 // Condizioni per viaggiare
-if (( lunghezzaAnni > 3 ) || ( parseInt( anni ) == 0 )) {
+
+// controllo età
+if (( lunghezzaAnni > 3 ) || ( lunghezzaAnni < 2 ) || ( parseInt( anni ) == 0 )) {
   alert( "inserisci un'età corretta" )
-} else if ( parseInt( anni ) > 100 ) {
+  ticketShown.innerHTML = "Ricarica la pagina";
+
+  // controllo vecchiaia
+} else if ( parseInt( anni ) > 120 ) {
   alert( "Forse sei un po' grandicello per viaggiare in treno" )
+  ticketShown.innerHTML = "Ricarica la pagina";
+
+  // controllo chilometraggio
 } else if ( km == 0 ) {
   alert( "inserisci chilometraggio corretto" )
-}
+  ticketShown.innerHTML = "Ricarica la pagina";
 
-anni = parseInt( anni );
-
-// Controllo inserimento dati
-if ( isNaN( km ) || isNaN( anni )) {
-  alert("inserisci valori numerici");
-}
-
-// SVOLGIMENTO
-// prezzo intero
-var fullTicket = ( km * euroKm );
-
-// calcolo scontistica
-var discountMinors = ( fullTicket * twentyPerCent )
-
-var discountOver65 = ( fullTicket * fortyPerCent )
-
-// vari prezzi dei tickets
-var minorsTicket = ( fullTicket - discountMinors );
-
-var over65Ticket = ( fullTicket - discountOver65 );
-
-// prezzo del ticket in base agli anni
-if ( anni < 18 ) {
-  ticket = minorsTicket;
-} else if ( anni > 65 ) {
-  ticket = over65Ticket;
 } else {
-  ticket = fullTicket;
-}
-// FINE SVOLGIMENTO
 
+  // Controllo inserimento dati
+  if ( isNaN( km ) || isNaN( anni )) {
+    ticketShown.innerHTML = "Non è stato possibile calcolare il prezzo del biglietto";
 
-// CONCLUSIONE
-if ( isNaN(ticket)) {
-  document.getElementById( "ticket" ).innerHTML = "Non è stato possibile calcolare il prezzo del biglietto";
-} else {
-  document.getElementById( "ticket" ).innerHTML = "Il prezzo del biglietto è : " + ticket.toFixed(2) + "$";
+    // Calcolo dei vari prezzi di biglietto
+  } else {
+
+    anni = parseInt( anni );
+
+    // prezzo intero
+    var ticket = ( km * euroKm );
+
+    // Prezzo del ticket in base agli anni
+    if ( anni < 18 ) {
+
+      // minorenne
+      var minorsTicket = ticket - ( ticket * ( 20 / 100 ));
+      ticket = minorsTicket;
+
+    } else if ( anni > 65 ) {
+
+      // over 65
+      var over65Ticket = ticket - ( ticket * ( 40 / 100 ));
+      ticket = over65Ticket;
+    }
+
+    ticketShown.innerHTML = "Il prezzo del biglietto è : " + ticket.toFixed(2) + "$";
+  }
 }
+// FINE LOGICA
